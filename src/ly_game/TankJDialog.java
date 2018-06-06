@@ -1,13 +1,15 @@
 package ly_game;
 
 import java.awt.Graphics;
+import java.awt.Image;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Random;
 
-import com.sun.corba.se.impl.io.OptionalDataException;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
+import javax.swing.JPanel;
 
 import ly_game.Bullet.Status;
 import ly_game.Spirit.Direction;
@@ -23,7 +25,11 @@ public class TankJDialog extends MyJDialog {
 		public TankJDialog(Tankframe frame) {
 		super(frame);
 		this.setTitle("ly_tank");
-		
+		ImageIcon backgroundi = new ImageIcon("img//back.png");// 添加背景
+		JLabel background = new JLabel(backgroundi);// 将图片放入标签
+		this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
+		background.setBounds(0, 0, backgroundi.getIconWidth(), backgroundi.getIconHeight());
+		((JPanel) getContentPane()).setOpaque(false);
 		map.initMap();
 		
 		
@@ -47,7 +53,7 @@ public class TankJDialog extends MyJDialog {
 	public void caculateAutoTank() {
 		Random r = new Random();
 		int AutoTankjudge = r.nextInt(50);// 在0到50产生数字
-		if (AutoTankjudge == 1) {
+		if ((AutoTankjudge == 1)&&(autotanks.size())<5) {
 			if(autotank == null) {
 				autotank = new AutoTank();
 				autotank.setXY(r.nextInt(500 + 20), r.nextInt(100 + 50));
@@ -87,7 +93,6 @@ public class TankJDialog extends MyJDialog {
 		super.paint(g);// 解决重载问题
 		int maptemp[][];
 		maptemp = map.returnmap();
-		map.draw(g);
 		if(maintank.canmove(maptemp))
 			maintank.move();
 
@@ -120,7 +125,7 @@ public class TankJDialog extends MyJDialog {
 
 		}
 
-		maintank.draw(g);// 画出tank
+		maintank.draw(this,g);// 画出tank
 
 		for (int i = 0; i < maintank.maintankbullets.size(); i++) {
 
@@ -151,7 +156,7 @@ public class TankJDialog extends MyJDialog {
 
 				}
 
-				autotanks.get(j).draw(g);
+				autotanks.get(j).draw(this,g);
 
 			}
 
@@ -177,7 +182,7 @@ public class TankJDialog extends MyJDialog {
 
 		} // autotank的子弹
 
-		/* g.drawImage(bufferImage,0, 0, this); //只需绘制gPlacement一张即可，不会有闪烁现象*/
+		//g.drawImage(imageBuffer,0, 0, this); //只需绘制gPlacement一张即可，不会有闪烁现象*/
 
 	}
 

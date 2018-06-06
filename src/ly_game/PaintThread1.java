@@ -16,7 +16,7 @@ public class PaintThread1 extends Thread {
 		// TODO Auto-generated method stub
 		while (maintank.status == Status.existence) {// ÎÞÏÞÑ­»·
 			try {
-				Thread.sleep(28);
+				Thread.sleep(36);
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

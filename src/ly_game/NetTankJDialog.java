@@ -49,7 +49,7 @@ public class NetTankJDialog extends MyJDialog{
 		super.paint(g);// 解决重载问题
 		int maptemp[][];
 		maptemp = map.returnmap();
-		map.draw(g);
+		map.draw(g,this);
 		if(maintank.canmove(maptemp))
 		maintank.move();// 改变XY坐标
 		

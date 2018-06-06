@@ -1,12 +1,12 @@
 package ly_game;
 
-import java.awt.Color;
 import java.awt.Graphics;
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 
 public class BlockStone extends Block{
-	public void draw(Graphics g) {
-		g.setColor(Color.YELLOW);
-		g.drawRect(x, y, width, height);
-		g.drawLine(x, y, x+width, y+height);
+	public void draw(Graphics g,JDialog jd) {
+		ImageIcon img = new ImageIcon("img//steelwall2.png");
+		g.drawImage(img.getImage(), x, y, width, height, jd);
 	}
 }

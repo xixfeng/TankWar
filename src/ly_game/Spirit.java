@@ -4,7 +4,7 @@ import java.awt.Graphics;
 
 import ly_game.Bullet.Status;
 
-public class Spirit {
+public abstract class Spirit {
 	enum Direction {
 		north, south, west, east
 	}

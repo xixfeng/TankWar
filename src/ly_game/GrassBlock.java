@@ -1,7 +1,9 @@
 package ly_game;
 
-import java.awt.Color;
 import java.awt.Graphics;
+
+import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 
 public class GrassBlock extends Block {
 	
@@ -9,16 +11,15 @@ public class GrassBlock extends Block {
 		x = ax;
 		y = ay;
 	}
-	public void draw(Graphics g) {
+	public void draw(Graphics g,JDialog jd) {
 		
-	
-		g.setColor(Color.green);
-		g.drawLine(x,y + height/2 ,x + width/4 ,y + height);
-		g.drawLine(x + width/4 ,y + height ,x + width/2 ,y);
-		g.drawLine(x + width/2 ,y , x + 3*width/4 ,y + height);
-		g.drawLine(x + 3*width/4 ,y + height,x + width ,y + height);
-		   
+		
+		
+		ImageIcon img = new ImageIcon("img//forest2.png");
+		g.drawImage(img.getImage(), x, y, width, height, jd);
+
 		
 	}
+
 
 }
