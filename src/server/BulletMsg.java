@@ -67,10 +67,10 @@ public class BulletMsg{
 			if(id%2==0) {
 				camp = 0;
 			}
-			else if(id%2==1){
+			if(id%2==1){
 				camp = 1;
 			}
-			tj.bullet = new Bullet(id,x,y,direction);
+			tj.bullet = new Bullet(id,x-12,y-12,direction);
 			tj.bullet.v = 10;
 			tj.bullet.camp = camp;
 			tj.bullets.add(tj.bullet);}

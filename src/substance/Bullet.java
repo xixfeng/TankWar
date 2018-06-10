@@ -20,13 +20,12 @@ public class Bullet extends Spirit {
 	ImageIcon bomb2 = new ImageIcon("img//2.png");
 	ImageIcon bomb3 = new ImageIcon("img//3.png");
 	ImageIcon[] bomb = { bomb1, bomb2, bomb3 };
-
 	public Bullet() {
 		v = 10;
 	}
 
-	public Bullet(int ip, int x, int y, Direction direction) {
-		this.id = ip;
+	public Bullet(int id, int x, int y, Direction direction) {
+		this.id = id;
 		this.x = x;
 		this.y = y;
 		this.direction = direction;

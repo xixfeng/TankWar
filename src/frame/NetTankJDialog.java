@@ -89,7 +89,7 @@ public class NetTankJDialog extends MyJDialog{
 		
 		if(bullet != null) {
 			for(int i=0;i<bullets.size();i++) {
-			maintank.bulletcash(bullets.get(i).getX(), bullets.get(i).getY(),bullets.get(i).camp);
+			maintank.bulletcashnet(bullets.get(i));
 			if(bullets.get(i).status == Status.unexistence) bullets.remove(i);
 			}
 		}
@@ -102,7 +102,7 @@ public class NetTankJDialog extends MyJDialog{
 				
 				if ( maintank.maintankbullets != null) {
 				for (int j = 0; j <  maintank.maintankbullets.size(); j++) {
-						enemytanks.get(i).bulletcash( maintank.maintankbullets.get(j).getX(), maintank.maintankbullets.get(j).getY(),maintank.maintankbullets.get(j).camp);
+						enemytanks.get(i).bulletcashnet(maintank.maintankbullets.get(j));
 				}
 			}
 				if(enemytanks.get(i).status == Status.unexistence)enemytanks.remove(i);

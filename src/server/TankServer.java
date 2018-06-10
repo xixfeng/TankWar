@@ -12,7 +12,7 @@ import java.net.SocketException;
 import java.util.ArrayList;
 
 public class TankServer {
-	public static int ID = 100;
+	public static int ID = 1;
 	public static final int TCP_PORT = 8888;
 	public static final int UDP_PORT = 6666;
 	

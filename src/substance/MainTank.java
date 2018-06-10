@@ -17,7 +17,6 @@ public class MainTank extends Tank {
 	public ArrayList<Bullet> maintankbullets = new ArrayList<>();// 自动扩容的对象数组
 	NetTankJDialog tj = null;
 	private int imgD = 25;
-	int camp = 0;
 	ShootMusicThread bombMusicThread = null;
 	ImageIcon maintankup = new ImageIcon("img//maintankup.png");// 添加背景
 
@@ -34,6 +33,7 @@ public class MainTank extends Tank {
 		this.id = id;
 		this.status = status;
 		this.v = v;
+		judgecamp();
 	}
 
 	public MainTank() {
@@ -68,7 +68,6 @@ public class MainTank extends Tank {
 		if (status == Status.existence) {
 			g.setColor(Color.RED);
 			g.drawString("id:" + id, x, y - 20);
-		}
 		// 画血条
 		switch (direction) {
 
@@ -89,22 +88,24 @@ public class MainTank extends Tank {
 			break;
 
 		}
+		}
 
 	}
 
-	public void bulletcash(int BulletX, int BulletY, int camp) {
-		if ((Math.sqrt((BulletX-imgD/10-x+imgD/2)*(BulletX-imgD/10-x+imgD/2)+
-				(BulletY-imgD/10-y+imgD/2)*(BulletY-imgD/10-y+imgD/2))
-				<=(6*imgD/10))&& (this.camp != camp)) {
-			length -= 1;
-			if (length <= 0)
-				status = Status.bomb;
+	public void bulletcashnet(Bullet bullet) {
+		judgecamp();
+		if ((Math.sqrt((bullet.x-imgD/10-x+imgD/2)*(bullet.x-imgD/10-x+imgD/2)+
+				(bullet.y-imgD/10-y+imgD/2)*(bullet.y-imgD/10-y+imgD/2))
+				<=(6*imgD/10))&& (camp != bullet.camp)&&(status == Status.existence)) {
+			bullet.status = Status.bomb;
+			this.status = Status.unexistence;
 		}
 	}
 
-	public void bulletcash(int BulletX, int BulletY) {
-		if (Math.sqrt((BulletX - x) * (BulletX - x) + (BulletY - y) * (BulletY - y)) <= 20) {
+	public void bulletcash(Bullet bullet) {
+		if (Math.sqrt((bullet.x - x) * (bullet.x - x) + (bullet.y - y) *(bullet.y - y)) <= 20) {
 			length -= 1;
+			bullet.status = Status.bomb;
 			if (length <= 0)
 				status = Status.bomb;
 		}

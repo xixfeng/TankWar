@@ -63,9 +63,9 @@ public abstract class Spirit {
 		}
 	}
 	public void judgecamp(){
-		if(id%2==0) {camp = 0;
+		if(id%2==0) {this.camp = 0;
 		}
-		else if(id%2==1) {camp = 1;
+		else if(id%2==1) {this.camp = 1;
 		}
 	}
 }

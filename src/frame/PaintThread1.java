@@ -28,12 +28,18 @@ public class PaintThread1 extends Thread {
 		}
 		if(maintank.status != Status.existence)
 		{
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		  
 				tankjdialog.setVisible(false);
 				tankjdialog.musicThread.musicPlayer.pause();
 		}
 		int newrecord;
 		File file = new File("record.txt");
-		newrecord = tankjdialog.getautotanknum();
+		newrecord = tankjdialog.kill;
 		try {
 			FileInputStream in = new FileInputStream(file);
 			byte recordin[] = new byte[1024];

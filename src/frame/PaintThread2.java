@@ -22,8 +22,15 @@ public class PaintThread2 extends Thread{
 			}
 			nettankjdialog.repaint();// repaint()将调用paint()与update()方法 即实现擦除功能
 		}
-		if(maintank.status == Status.unexistence) {
-			nettankjdialog.setVisible(false);
+		if(maintank.status != Status.existence)
+		{
+			try {
+				Thread.sleep(2000);
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}		  
+				nettankjdialog.setVisible(false);
 		}
 	}
 }

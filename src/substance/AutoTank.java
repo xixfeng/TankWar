@@ -7,6 +7,7 @@ import java.util.Random;
 import javax.swing.ImageIcon;
 import javax.swing.JDialog;
 
+import frame.TankJDialog;
 import music.ShootMusicThread;
 
 public class AutoTank extends Tank implements Cloneable{
@@ -39,16 +40,16 @@ public class AutoTank extends Tank implements Cloneable{
 		if(status == Status.existence) {
 		switch(direction) {
 		case north:
-			g.drawImage(maintankup.getImage(), this.x-imgD,this.y-imgD*2,imgD,imgD,jd);
+			g.drawImage(maintankup.getImage(), this.x-imgD,this.y-imgD,imgD,imgD,jd);
 			break;
 		case west:
-			g.drawImage(maintankwest.getImage(), this.x-imgD,this.y-imgD*2,imgD,imgD,jd);
+			g.drawImage(maintankwest.getImage(), this.x-imgD,this.y-imgD,imgD,imgD,jd);
 			break;
 		case south:
-			g.drawImage(maintanksouth.getImage(), this.x-imgD,this.y-imgD*2,imgD,imgD,jd);
+			g.drawImage(maintanksouth.getImage(), this.x-imgD,this.y-imgD,imgD,imgD,jd);
 			break;
 		case east:
-			g.drawImage(maintankeast.getImage(), this.x-imgD,this.y-imgD*2,imgD,imgD,jd);
+			g.drawImage(maintankeast.getImage(), this.x-imgD,this.y-imgD,imgD,imgD,jd);
 			break;
 		default:
 			break;	
@@ -72,12 +73,13 @@ public class AutoTank extends Tank implements Cloneable{
 			bombMusicThread.start();
 		}
 	}
-	public void bulletcash(Bullet bullet) {
-		if (Math.sqrt((bullet.getX()-imgD/10-x+imgD/2)*(bullet.getX()-imgD/10-x+imgD/2)+
-				(bullet.getY()-imgD/10-y+imgD/2)*(bullet.getY()-imgD/10-y+imgD/2))<=(6*imgD/10))
+	public void bulletcash(Bullet bullet,TankJDialog tj) {
+		if ((Math.sqrt((bullet.getX()-imgD/10-x+imgD/2)*(bullet.getX()-imgD/10-x+imgD/2)+
+				(bullet.getY()-imgD/10-y+imgD/2)*(bullet.getY()-imgD/10-y+imgD/2))<=(6*imgD/10))&&(status == Status.existence))
 		{
 			status = Status.bomb;
 			bullet.status = Status.bomb;
+			tj.kill++;
 		}
 	}
 	@SuppressWarnings("unchecked")

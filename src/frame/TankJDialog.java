@@ -1,14 +1,23 @@
 package frame;
 
+import java.awt.Color;
+import java.awt.Font;
 import java.awt.Graphics;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
 import java.util.Random;
 
 import javax.swing.ImageIcon;
+import javax.swing.JDialog;
 import javax.swing.JLabel;
+import javax.swing.JMenu;
+import javax.swing.JMenuBar;
+import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 
 import map.Map;
 import music.MusicThread;
@@ -24,11 +33,12 @@ public class TankJDialog extends MyJDialog {
 	private Map map = new Map();
 	FileWR mapWR = new FileWR();
 	private AutoTank autotank;
-	private AutoTank autotankClone;
+	private int numofAutoTank = 10;
+	public int kill = 0;
 	MusicThread musicThread = null;
 		public TankJDialog(Tankframe frame) {
 		super(frame);
-		this.setTitle("ly_tank");
+		this.setTitle("单人游戏");
 		ImageIcon backgroundi = new ImageIcon("img//back.png");// 添加背景
 		JLabel background = new JLabel(backgroundi);// 将图片放入标签
 		this.getLayeredPane().add(background, new Integer(Integer.MIN_VALUE));
@@ -37,6 +47,7 @@ public class TankJDialog extends MyJDialog {
 		map.initMap();
 		
 		
+		setBar();
 		addKeyListener(new KeyMonitor());// 监听器会一直执行 直到程序结束
 		PaintThread1 myThread = new PaintThread1();
 		myThread.setdefault(this, this.maintank);
@@ -56,11 +67,10 @@ public class TankJDialog extends MyJDialog {
 	public void caculateAutoTank() {
 		Random r = new Random();
 		int AutoTankjudge = r.nextInt(50);// 在0到50产生数字
-		if (AutoTankjudge == 1) {
-			
-				autotank = new AutoTank();
-				autotank.setXY(r.nextInt(500 + 200), r.nextInt(100 + 300));
-				autotanks.add(autotank);
+		if ((AutoTankjudge == 1)&&(autotanks.size()<numofAutoTank)) {
+			    	autotank = new AutoTank();
+					autotank.setXY(r.nextInt(500 + 200), r.nextInt(100 + 300));
+					autotanks.add(autotank);
 		}
 		if (autotank != null) {
 			for (int i = 0; i < autotanks.size(); i++) {
@@ -81,6 +91,16 @@ public class TankJDialog extends MyJDialog {
 					break;
 				case(4):
 					autotanks.get(i).createbullet();
+					break;
+				case(5):
+					autotanks.get(i).createbullet();
+					break;
+				case(6):
+					autotanks.get(i).createbullet();
+					break;
+				case(7):
+					autotanks.get(i).createbullet();
+					break;
 				}
 			}
 			
@@ -91,7 +111,11 @@ public class TankJDialog extends MyJDialog {
 		super.paint(g);// 解决重载问题
 		int maptemp[][];
 		maptemp = map.returnmap();
-
+	    g.setColor(Color.WHITE);
+	    g.setFont(new Font("楷书", 0, 15));
+	    g.drawString("当前得分数："+kill, 850, 80);
+	    g.drawString("最大坦克数："+numofAutoTank, 850, 100);
+	    g.drawString("当前坦克数："+autotanks.size(), 850, 120);
 		if (autotank != null) {
 
 				if(maintank.canmove(maptemp))
@@ -104,9 +128,7 @@ public class TankJDialog extends MyJDialog {
 
 					if (autotanks.get(j).autotankbullet != null) {
 
-						maintank.bulletcash(autotanks.get(j).AutoTankbullets.get(i).getX(),
-
-								autotanks.get(j).AutoTankbullets.get(i).getY());
+						maintank.bulletcash(autotanks.get(j).AutoTankbullets.get(i));
 
 					}
 
@@ -122,6 +144,10 @@ public class TankJDialog extends MyJDialog {
 		}
 
 		maintank.draw(this,g);// 画出tank
+		if(maintank.status != Status. existence) {
+			ImageIcon img = new ImageIcon("img//gameOver.jpg");
+			g.drawImage(img.getImage(), 100, 100, 800, 600, this);
+		}
 
 		for (int i = 0; i < maintank.maintankbullets.size(); i++) {
 
@@ -137,15 +163,15 @@ public class TankJDialog extends MyJDialog {
 		if (autotank != null) {
 
 			for (int j = 0; j < autotanks.size(); j++) {
-
-                  if(autotanks.get(j).canmove(maptemp))
-                	
+				if(autotanks.get(j).status == Status.unexistence) 
+					autotanks.remove(j);
+                  if(autotanks.get(j).canmove(maptemp))	
                 	autotanks.get(j).move();		
 				for (int i = 0; i <  maintank.maintankbullets.size(); i++) {
 
 					if ( maintank.maintankbullets != null) {
 
-						autotanks.get(j).bulletcash( maintank.maintankbullets.get(i));
+						autotanks.get(j).bulletcash(maintank.maintankbullets.get(i),this);
 
 					}
 
@@ -179,17 +205,48 @@ public class TankJDialog extends MyJDialog {
 
 		//g.drawImage(imageBuffer,0, 0, this); //只需绘制gPlacement一张即可，不会有闪烁现象*/
 
+		
 	}
+	private void setBar() {
+		JMenuBar mBar = new JMenuBar();
+        setJMenuBar(mBar);
+        JMenu fileMenu = new JMenu("控制自动坦克数量");
+        JMenuItem miOpen = new JMenuItem("请输入正整数");
+        miOpen.addActionListener(new NumofAutoActionLisener());
+        mBar.add(fileMenu); 
+        fileMenu.add(miOpen);
+        fileMenu.addSeparator();//分隔条  
+	}
+	class NumofAutoActionLisener implements ActionListener
+	{
 
-	public int getautotanknum() {
-		int num = 0;
-		if (autotank != null) {
-			for (int i = 0; i < autotanks.size(); i++) {
-				if (autotanks.get(i).status == Status.unexistence)
-					num++;
-			}
+		@Override
+		public void actionPerformed(ActionEvent e) {
+			// TODO Auto-generated method stub
+			JDialog jd = new JDialog(TankJDialog.this);
+			JTextField jt = new JTextField();
+			jd.setSize(200,100);
+			jd.setLocationRelativeTo(null);
+			jd.add(jt);
+			jd.setVisible(true);
+			jt.addActionListener(new ActionListener() {
+				
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+					int num = Integer.parseInt(jt.getText());
+					if(num > 0) {
+					if(autotanks.size()>num) {
+						for(int i=0;i<autotanks.size()-num;i++)
+							autotanks.get(i).status = Status.bomb;//之前错误的把numofautotank当成autotank的数量
+					}
+					numofAutoTank = num;//在parse时会产生异常
+					}
+				}
+			});
 		}
-		return num;
+		
 	}
+	
 	
 }

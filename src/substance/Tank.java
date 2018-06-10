@@ -77,7 +77,7 @@ public class Tank extends Spirit {
 		Boolean moveState = false;
 
 		if (getDirection() == Direction.north) {
-			if ((y / Block.height - 1) >= 0) {//判断是否在界面里面
+			if (y>=90) {//判断是否在界面里面
 				if (map[y / Block.height - 1][x / Block.width] == 2) {//下面是砖 不能移动
 					moveState = false;
 				} else {
